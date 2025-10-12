@@ -6,6 +6,7 @@ ID: <student_id>
 Username: <username>
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
+import random
 
 class Hacker:
     def __init__(self, rig):
@@ -13,7 +14,7 @@ class Hacker:
         self.crypto_token = 1
         self.rig = rig
         self.trace_level = 0
-
+#test commit
 
     def acquire_rig(self, num):
         if num > 0:
