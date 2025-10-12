@@ -7,28 +7,48 @@ Username: <username>
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 import random
+from Asset import Asset
+from Rig import Rig
+
 
 class Hacker:
-    def __init__(self, rig):
-        self.name = "xxx_(rYPT"
-        self.crypto_token = 1
-        self.rig = rig
-        self.trace_level = 0
-#test commit
+    def __init__(self, name):
+        self.__name = name
+        self.__crypto_token = 2
+        self.__rig = 0
+        self.__trace_level = 0
 
-    def acquire_rig(self, num):
-        if num > 0:
-            self.rig = self.rig + 1
-            self.crypto_token = self.crypto_token - 1
+    def acquire_rig(self, rig_name):
+        if self.__crypto_token > 0:
+            self.__rig = Rig(rig_name)
+            self.__crypto_token = self.__crypto_token - 1
             print("You have activated a new rig")
         else:
-            print("You do not have enough tokens to acquire a new rig. Try again later")
+            print("You do not have enough tokens to acquire a new rig")
 
+        # create a target health, have 3 rounds of attacks under one spike
+        # randomly generate damage, if damage breaks target, acquire a new asset (list, use random selector?)
+    def launch_data_spike(self):
+        pass
 
     def trace(self):
         pass
 
+    def repair_my_rig(self):
+        if self.__crypto_token > 0:
+            if self.__rig.rig_repair():
+                self.__crypto_token = self.__crypto_token - 1
+            else:
+                print("No repair needed")
+        else:
+            print("Insufficient funds to repair")
+
+    def upgrade_my_rig(self):
+        # Needs hardware patch, increases rig level, storage size and decreases battle
+        # need rig and hardware patch to execute
+        pass
 
 
-hacker = Hacker(0)
-hacker.acquire_rig(1)
+hacker = Hacker("Trent")
+hacker.acquire_rig("rig1")
+hacker.repair_my_rig()
