@@ -7,39 +7,72 @@ Username: <username>
 This is my own work as defined by the University's Academic Misconduct Policy.
 """
 
+import random
+from Asset import Asset
 
 class Rig:
-    def __init__(self):
-        self.name = "rig"
-        self.damage_counter = 0
-        self.broken_state = False
-        self.storage = 0
-        self.data_spikes = 2
-        self.removable_drive = 1
-        self.upgrade_level = 0
+    def __init__(self, name):
+        self.__name = name
+        self.__damage_counter = 0
+        self.__broken_state = False
+        self.__storage = []
+        data_spike1 = Asset("Data Spike", "Data Spike")
+        self.store_asset(data_spike1)
+        data_spike2 = Asset("Data Spike", "Data Spike")
+        self.store_asset(data_spike2)
+        self.__removable_drive = 1
+        self.__upgrade_level = 0
 
 
     def rig_repair(self):
-        pass
+        if self.__damage_counter == 0:
+            repaired = False
+        else:
+            self.__damage_counter = 0
+            self.__broken_state = False
+            repaired = True
+        return repaired
 
+    def store_asset(self, asset):
+        self.__storage.append(asset)
 
+    def get_storage(self):
+        return self.__storage
 
-    def rig_upgrade(self):
-        pass
 
     def rig_condition(self):
         # Initialise condition variable, assign words depending on condition
         condition = ""
-        if self.damage_counter == 0:
+        if self.__damage_counter == 0:
             condition = "Pristine"
-        elif self.damage_counter == 1 or self.damage_counter == 2:
+        elif self.__damage_counter == 1 or self.__damage_counter == 2:
             condition = "Fragile"
-        elif self.damage_counter == 3 or self.damage_counter == 4:
+        elif self.__damage_counter == 3 or self.__damage_counter == 4:
             condition = "Damaged"
-        elif self.damage_counter == 5:
+        elif self.__damage_counter == 5:
             condition = "Broken"
 
-        print(f"{condition} (Level {self.upgrade_level})")
+        return f"{condition} (Level {self.__upgrade_level})"
 
-rig = Rig()
-rig.rig_condition()
+
+    def take_damage(self):
+        self.__damage_counter = self.__damage_counter + 1
+
+
+    def consume_asset(self, asset):
+        for item in self.__storage:
+            if item == asset:
+                self.__storage.remove(asset)
+                break
+
+
+
+
+
+
+
+
+
+
+    def __str__(self):
+        pass
