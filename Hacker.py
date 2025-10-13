@@ -17,6 +17,7 @@ class Hacker:
         self.__crypto_token = 2
         self.__rig = 0
         self.__trace_level = 0
+        self.__inventory = []
 
     def acquire_rig(self, rig_name):
         if self.__crypto_token > 0:
@@ -26,10 +27,16 @@ class Hacker:
         else:
             print("You do not have enough tokens to acquire a new rig")
 
-        # create a target health, have 3 rounds of attacks under one spike
-        # randomly generate damage, if damage breaks target, acquire a new asset (list, use random selector?)
-    def launch_data_spike(self):
-        pass
+    def get_rig(self):
+        return self.__rig
+
+    def launch_data_spike(self, target_rig):
+         for item in self.__rig.get_storage():
+             if item.get_name() == "Data Spike":
+                target_rig.take_damage()
+                self.__rig.consume_asset(item)
+                break
+
 
     def trace(self):
         pass
@@ -49,6 +56,3 @@ class Hacker:
         pass
 
 
-hacker = Hacker("Trent")
-hacker.acquire_rig("rig1")
-hacker.repair_my_rig()
