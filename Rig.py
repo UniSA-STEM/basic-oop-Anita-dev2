@@ -14,15 +14,18 @@ class Rig:
     def __init__(self, name):
         self.__name = name
         self.__damage_counter = 0
-        self.__broken_state = False
+        self.__broken_state = True
         self.__storage = []
         data_spike1 = Asset("Data Spike", "Data Spike")
         self.store_asset(data_spike1)
         data_spike2 = Asset("Data Spike", "Data Spike")
         self.store_asset(data_spike2)
+        removable_drive = Asset("Removable Drive", "Removable Drive")
+        self.store_asset(removable_drive)
+        security_chip = Asset("Security Chip", "Security Chip")
+        self.store_asset(security_chip)
         self.__removable_drive = 1
         self.__upgrade_level = 0
-
 
     def rig_repair(self):
         if self.__damage_counter == 0:
@@ -54,6 +57,9 @@ class Rig:
 
         return f"{condition} (Level {self.__upgrade_level})"
 
+    def is_broken(self):
+        return self.__broken_state
+
 
     def take_damage(self):
         self.__damage_counter = self.__damage_counter + 1
@@ -67,12 +73,8 @@ class Rig:
 
 
 
-
-
-
-
-
-
-
     def __str__(self):
-        pass
+        string = f""
+        for item in self.__storage:
+            string = string + f"{item}\n"
+        return string
