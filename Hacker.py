@@ -14,29 +14,77 @@ from Rig import Rig
 class Hacker:
     def __init__(self, name):
         self.__name = name
-        self.__crypto_token = 2
+        self.__inventory = []
+        crypto_token1 = Asset("CryptoToken", "CryptoToken")
+        self.__inventory.append(crypto_token1)
         self.__rig = 0
         self.__trace_level = 0
-        self.__inventory = []
+
 
     def acquire_rig(self, rig_name):
-        if self.__crypto_token > 0:
-            self.__rig = Rig(rig_name)
-            self.__crypto_token = self.__crypto_token - 1
-            print("You have activated a new rig")
-        else:
-            print("You do not have enough tokens to acquire a new rig")
+        for item in self.__inventory:
+            if item.get_name() == "CryptoToken":
+                self.__rig = Rig(rig_name)
+                self.__inventory.remove(item)
+                print("You have activated a new rig")
+            else:
+                print("You do not have enough tokens to acquire a new rig")
+
+    def encrypt_assets(self, asset_name):
+        for item in self.__rig.get_storage():
+            if item.get_name() == "Security Chip":
+                for item_to_encrypt in self.__rig.get_storage():
+                    if item_to_encrypt.get_name() == asset_name and not item_to_encrypt.is_encrypted():
+                        item_to_encrypt.encrypt()
+                        self.__rig.consume_asset(item)
+                        break
+        print(f"There is no unencrypted {asset_name}(s)")
+
+
 
     def get_rig(self):
         return self.__rig
 
     def launch_data_spike(self, target_rig):
-         for item in self.__rig.get_storage():
+        for item in self.__rig.get_storage():
              if item.get_name() == "Data Spike":
                 target_rig.take_damage()
                 self.__rig.consume_asset(item)
                 break
 
+        if target_rig.is_broken():
+            for item in self.__rig.get_storage():
+                if item.get_name() == "Removable Drive":
+                    self.__rig.consume_asset(item)
+                    '''storage_size = len(target_rig.get_storage()) - 1
+                    for index in range(storage_size, -1, -1):
+                        if not target_rig.get_storage()[index].is_encrypted():
+                            self.__rig.store_asset(target_rig.get_storage()[index])
+                            target_rig.consume_asset(target_rig.get_storage()[index])'''
+                    for item2 in target_rig.get_storage()[:]:
+                        if not item2.is_encrypted():
+                            self.__rig.store_asset(item2)
+                            target_rig.consume_asset(item2)
+                    break
+
+
+
+    def add_asset(self, asset_name):
+        if asset_name == "Data Spike":
+            asset = Asset("Data Spike", "CryptoToken")
+            self.__inventory.append(asset)
+        elif asset_name == "patch":
+            asset = Asset("patch", "CryptoToken")
+            self.__inventory.append(asset)
+        elif asset_name == "token":
+            asset = Asset("token", "CryptoToken")
+            self.__inventory.append(asset)
+        elif asset_name == "chip":
+            asset = Asset("chip", "CryptoToken")
+            self.__inventory.append(asset)
+
+    def get_inventory(self):
+        return self.__inventory
 
     def trace(self):
         pass
