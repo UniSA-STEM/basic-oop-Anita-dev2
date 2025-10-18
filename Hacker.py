@@ -142,4 +142,36 @@ class Hacker:
         # need rig and hardware patch to execute
         pass
 
+    def transfer_all_assets(self, list1, list2):
+        for item in list1[:]:
+            if not item.is_encrypted():
+                list1.remove(item)
+                list2.append(item)
+
+
+
+    def transfer_an_asset(self, asset, list1, list2):
+        for item in list1:
+            if item.get_name() == asset:
+                list1.remove(item)
+                list2.append(item)
+            else:
+                print(f"{item} was not found")
+
+
+    def scan_inventory(self, asset):
+        for item in self.__inventory:
+            if item.get_name() == asset:
+                self.__inventory.remove(item)
+                print(f"{item} has been removed from inventory")
+            else:
+                print(f"{item} not in inventory")
+
+
+
+    def __str__(self):
+        inventory = ""
+        for items in self.__inventory:
+            inventory = inventory + f"{items}\n"
+        return f"<Hacker Name: {self.__name}> : <Rig Name: {self.__rig.get_rig_name()}> : <Trace Level: {self.__trace_level}> \n<Inventory>\n{inventory}"
 
