@@ -72,6 +72,11 @@ class Rig:
                 break
 
 
+    def increment_upgrade_level(self):
+        if self.__upgrade_level < 4:
+            self.__upgrade_level = self.__upgrade_level + 1
+        else:
+            print("This rig is fully upgraded (Level 4).")
 
     def __str__(self):
         string = f""
