@@ -42,6 +42,28 @@ class Rig:
     def get_storage(self):
         return self.__storage
 
+    def get_rig_name(self):
+        return self.__name
+
+    def generate_assets(self):
+        r_num = random.randint(1,5)
+        if r_num == 1:
+            asset1 = Asset("CryptoToken", "This is used to acquire and repair rigs")
+            self.__storage.append(asset1)
+        elif r_num == 2:
+            asset2 = Asset("Data Spike", "This is used to launch an attack on a Target Rig")
+            self.__storage.append(asset2)
+        elif r_num == 3:
+            asset3 = Asset("Removable Drive", "Used for extraction of assets")
+            self.__storage.append(asset3)
+        elif r_num == 4:
+            asset4 = Asset("Security Chip", "This is used to encrypt or decrypt assets")
+            self.__storage.append(asset4)
+        elif r_num == 5:
+            asset5 = Asset("Hardware Patch", "This is used to upgrade rigs")
+            self.__storage.append(asset5)
+
+
 
     def rig_condition(self):
         # Initialise condition variable, assign words depending on condition
