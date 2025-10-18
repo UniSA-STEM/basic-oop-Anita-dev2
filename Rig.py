@@ -71,6 +71,8 @@ class Rig:
                 self.__storage.remove(asset)
                 break
 
+    def get_upgrade_level(self):
+        return self.__upgrade_level
 
     def increment_upgrade_level(self):
         if self.__upgrade_level < 4:
