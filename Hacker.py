@@ -115,7 +115,18 @@ class Hacker:
         return self.__inventory
 
     def trace(self):
-        pass
+        if self.__trace_level < 5:
+            self.__trace_level = self.__trace_level + 1
+
+    def get_trace(self):
+        return self.__trace_level
+
+    def reduce_trace(self):
+        if self.__trace_level > 0:
+            for item in self.__inventory:
+                if item.get_name() == "CryptoToken":
+                    self.__trace_level = 0
+                    self.__inventory.remove(item)
 
     def repair_my_rig(self):
         if self.__crypto_token > 0:
