@@ -40,6 +40,34 @@ class Hacker:
                         break
         print(f"There is no unencrypted {asset_name}(s)")
 
+    def decrypt_assets(self, asset_name):
+        """
+        This method decrypts an asset provided that the hacker has a security chip in their inventory
+        :param asset_name:
+        :return:
+        """
+        # Check for Security Chip in inventory, if yes, proceeds to checks for if there is a match in asset and  whether the
+        # asset is already decrypted. If it is not, the method decrypts the asset and consumes the security chip
+        if self.get_trace() < 5:
+            found_asset = False
+            sec_chip = False
+            for item in self.__inventory:
+                if item.get_name() == "Security Chip":
+                    sec_chip = True
+                    for item_to_encrypt in self.__rig.get_storage():
+                        if item_to_encrypt.get_name() == asset_name and item_to_encrypt.is_encrypted():
+                            found_asset = True
+                            item_to_encrypt.encrypt()
+                            self.__inventory.remove(item)
+                            break
+                if found_asset:
+                    break
+            if not sec_chip:
+                print("You do not have any security chips.")
+            elif not found_asset:
+                print(f"There is no encrypted {asset_name}(s)")
+        else:
+            print("Your trace level is too high!")
 
 
     def get_rig(self):
