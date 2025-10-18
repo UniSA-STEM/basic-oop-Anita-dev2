@@ -14,16 +14,14 @@ class Rig:
     def __init__(self, name):
         self.__name = name
         self.__damage_counter = 0
-        self.__broken_state = True
+        self.__broken_state = False
         self.__storage = []
-        data_spike1 = Asset("Data Spike", "Data Spike")
+        data_spike1 = Asset("Data Spike", "This is used to launch an attack on a Target Rig")
         self.store_asset(data_spike1)
-        data_spike2 = Asset("Data Spike", "Data Spike")
+        data_spike2 = Asset("Data Spike", "This is used to launch an attack on a Target Rig")
         self.store_asset(data_spike2)
-        removable_drive = Asset("Removable Drive", "Removable Drive")
+        removable_drive = Asset("Removable Drive", "Used for extraction of assets")
         self.store_asset(removable_drive)
-        security_chip = Asset("Security Chip", "Security Chip")
-        self.store_asset(security_chip)
         self.__removable_drive = 1
         self.__upgrade_level = 0
 
@@ -85,6 +83,8 @@ class Rig:
 
     def take_damage(self):
         self.__damage_counter = self.__damage_counter + 1
+        if self.__damage_counter == self.__upgrade_level + 2:
+            self.__broken_state = True
 
 
     def consume_asset(self, asset):
