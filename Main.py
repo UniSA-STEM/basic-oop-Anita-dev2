@@ -12,6 +12,12 @@ from Asset import Asset
 from Rig import Rig
 
 def test_encryption():
+    """
+    - Hackers and Rigs are created
+    - TEST: whether it will encrypt two items in a row without a second security chip
+    - Display storage to see whether items were encrypted
+    :return:
+    """
     # Create two hackers, and acquire rigs for both
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -31,6 +37,13 @@ def test_encryption():
 
 
 def test_transferring_encrypted_items():
+    """
+    - Hackers and Rigs are created
+    - Target encrypts asset
+    - Hacker launches data spikes
+    - TEST: To see whether the target hacker had their encrypted assets transferred
+    :return:
+    """
     # Create two hackers, and acquire rigs for both
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -50,6 +63,17 @@ def test_transferring_encrypted_items():
 
 
 def test_decryption():
+    """
+    - Hackers and rigs are created
+    - Inventory and storage displayed prior to encryption
+    - Target hacker encrypts
+    - Assets are Generated
+    - Security Chip is transferred from storage to inventory
+    - Inventory is displayed again
+    - Target hacker decrypts
+    - Rig storage displayed to show changes
+    :return:
+    """
     # Create two hackers, and acquire rigs for both
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -81,6 +105,17 @@ def test_decryption():
     print(target_hacker.get_rig())
 
 def test_battles():
+    """
+    - Hackers and rigs created
+    - Both rigs storage displayed prior to data spikes
+    - Hacker launches data spikes
+    - Display hacker inventory
+    - Check of trace level
+    - Check of rig condition
+    - Upgrade rig
+    - Check of rig condition after upgrading
+    :return:
+    """
     # Create two hackers and both acquire rigs
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -110,6 +145,18 @@ def test_battles():
 
 
 def test_upgrade():
+    """
+    - Hacker is created
+    - TEST: Hacker tries to upgrade without a rig
+    - Hacker acquires rig
+    - Check of condition
+    - Upgrade Rig
+    - Check of condition after upgrade
+    - Generate assets
+    - Transfer Hardware Patches to inventory
+    - TEST: Upgrading to max level
+    :return:
+    """
     # Creating a Hacker object
     hacker = Hacker("xxx_(rypt0")
 
@@ -147,9 +194,23 @@ def test_upgrade():
     hacker.upgrade_my_rig()
 
 
-
-
 def test_trace_level():
+    """
+    - Create two hackers and rigs
+    - Display hacker rig storage
+    - Hacker launches multiple data spikes
+    - Display hacker rig storage
+    - Generate assets
+    - Launch additional data spikes
+    - Display trace level
+    - TEST: Reduce trace without a CryptoToken
+    - Display inventory
+    - Transfer CryptoToken to inventory
+    - Display inventory after transferring CryptoToken
+    - Reduce Trace level
+    - Display Trace level
+    :return:
+    """
     # Create two hackers and both acquire rigs
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -199,6 +260,12 @@ def test_trace_level():
     print(hacker.get_trace())
 
 def test_rig():
+    """
+    - Hacker is created
+    - Inventory scanned and CryptoToken removed
+    - TEST: hacker tries to acquire rig without CryptoToken
+    :return:
+    """
     # Create hacker object
     hacker = Hacker("hack")
 
@@ -209,6 +276,21 @@ def test_rig():
     hacker.acquire_rig("rig1")
 
 def test_conditions():
+    """
+    - Hackers and rigs created
+    - Data spikes launched by target hacker
+    - Check condition of hacker
+    - Upgrade hacker rig
+    - Check condition of hacker after upgrade
+    - Generate assets
+    - Transfer CryptoToken to inventory
+    - Repair rig
+    - TEST: Try to repair again after already repairing
+    - Display hacker rig condition
+    - Target hacker launches another data spike
+    - Display hacker rig condition after data spike
+    :return:
+    """
     # Create two hackers and both acquire rigs
     hacker = Hacker("xxx_(rypt0")
     hacker.acquire_rig("H4CKeR")
@@ -248,9 +330,6 @@ def test_conditions():
 
     # Display rig condition after Data Spike
     print(hacker.get_rig().rig_condition())
-
-
-
 
 
 def main():
