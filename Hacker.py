@@ -161,6 +161,17 @@ class Hacker:
         """
         return self.__inventory
 
+    def display_inventory(self):
+        """
+        This method formats the inventory to display
+        :return:
+        """
+        inventory = ""
+        for items in self.__inventory:
+            inventory = inventory + f"{items}\n"
+
+        return inventory
+
     def trace(self):
         """
         This method increases trace level as long as it's less than the maximum
