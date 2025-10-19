@@ -45,6 +45,7 @@ class Hacker:
                     self.__rig = Rig(rig_name)
                     self.__inventory.remove(item)
                     print("You have activated a new rig")
+                    print()
                     found = True
                     break
             if not found:
@@ -98,10 +99,10 @@ class Hacker:
             for item in self.__inventory:
                 if item.get_name() == "Security Chip":
                     sec_chip = True
-                    for item_to_encrypt in self.__rig.get_storage():
-                        if item_to_encrypt.get_name() == asset_name and item_to_encrypt.is_encrypted():
+                    for item_to_decrypt in self.__rig.get_storage():
+                        if item_to_decrypt.get_name() == asset_name and item_to_decrypt.is_encrypted():
                             found_asset = True
-                            item_to_encrypt.encrypt()
+                            item_to_decrypt.decrypt()
                             self.__inventory.remove(item)
                             break
                 if found_asset:
@@ -132,12 +133,17 @@ class Hacker:
         """
         # Check if trace level is not exposed, then enters Rig storage to check for Data Spikes
         if self.get_trace() < 5:
+            data_spike = False
             for item in self.__rig.get_storage():
                  if item.get_name() == "Data Spike":
+                    data_spike = True
                     # Deal damage to the target rig, and consume the Data Spike
                     target_rig.take_damage()
+                    self.trace()
                     self.__rig.consume_asset(item)
                     break
+            if not data_spike:
+                print("You do not have enough data spikes")
 
 
             # If the target rig is broken, search storage for a Removable Drive
@@ -195,11 +201,17 @@ class Hacker:
         """
         # Validate whether trace level needs to be reduced
         if self.__trace_level > 0:
+            crypto = False
             for item in self.__inventory:
                 # If hacker has a CryptoToken, set trace level back to zero and remove CryptoToken from inventory
                 if item.get_name() == "CryptoToken":
+                    crypto = True
                     self.__trace_level = 0
                     self.__inventory.remove(item)
+                    break
+            if not crypto:
+                print("You do not have a CryptoToken")
+
 
     def repair_my_rig(self):
         """
@@ -207,16 +219,25 @@ class Hacker:
         :return:
         """
         # Validates whether hacker has a CryptoToken
-        for item in self.__inventory:
-            if item.get_name() == "CryptoToken":
-                # If the repair is completed, remove CryptoToken and display result to user
-                if self.__rig.rig_repair():
-                    self.__inventory.remove(item)
-                    print("Repair complete")
-                else:
-                    print("No repair needed")
-            else:
+        found_asset = False
+        repaired = False
+        if self.__rig.get_damage_counter() > 0:
+            for item in self.__inventory:
+                if item.get_name() == "CryptoToken":
+                    found_asset = True
+                    # If the repair is completed, remove CryptoToken and display result to user
+                    if self.__rig.rig_repair():
+                        self.__inventory.remove(item)
+                        repaired = True
+                        print("Repair complete")
+                        break
+            if not found_asset:
                 print("Insufficient funds to repair")
+
+        if not repaired:
+            print("No repair needed")
+
+
 
 
     def upgrade_my_rig(self):
@@ -225,11 +246,20 @@ class Hacker:
         :return:
         """
         # If the Hardware Patch is in the inventory, upgrade the rig and remove the Hardware Patch from inventory
-        for item in self.__inventory:
-            if item.get_name() == "Hardware Patch":
-                self.__rig.increment_upgrade_level()
-                self.__inventory.remove(item)
-                break
+        if self.__rig != 0 and self.__rig.get_upgrade_level() < 4:
+            found_asset = False
+            for item in self.__inventory:
+                if item.get_name() == "Hardware Patch":
+                    found_asset = True
+                    self.__rig.increment_upgrade_level()
+                    self.__inventory.remove(item)
+                    break
+
+            if not found_asset:
+                print("You do not have a Hardware Patch")
+        else:
+            print("No rig can be upgraded")
+
 
 
     def transfer_all_assets(self, list1, list2):
@@ -240,7 +270,7 @@ class Hacker:
         :param list2:
         :return:
         """
-        # If the item is in the list and is not encrypted, perform the transfer
+        # If the item is in the list and is not encrypted, perform the transfer. Done on copy of list
         for item in list1[:]:
             if not item.is_encrypted():
                 list1.remove(item)
@@ -258,13 +288,17 @@ class Hacker:
         :return:
         """
         # Iterate through the first list to find match, if there's a match, transfer to other list
+        found_asset = False
         for item in list1:
             if item.get_name() == asset:
+                found_asset = True
                 list1.remove(item)
                 list2.append(item)
-            else:
-                # Display to user that the item passed in was not in the list
-                print(f"{item} was not found")
+                break
+
+        if not found_asset:
+            # Display to user that the item passed in was not in the list
+            print(f"{asset} was not found")
 
 
     def scan_inventory(self, asset):
@@ -274,12 +308,14 @@ class Hacker:
         :return:
         """
         # Loop through inventory to find asset match, and display results to user
+        found_asset = False
         for item in self.__inventory:
             if item.get_name() == asset:
                 self.__inventory.remove(item)
+                found_asset = True
                 print(f"{item} has been removed from inventory")
-            else:
-                print(f"{item} not in inventory")
+        if not found_asset:
+            print(f"{asset} not in inventory")
 
 
 
